@@ -48,4 +48,16 @@ router.delete('/records/:id', async (req, res) => {
   }
 });
 
+router.get('/getAll', async (req, res) => {
+  try{
+    const getAll = await Record.find();
+    if (!getAll.length === 0) {
+      return res.status(200).send({ error: 'Database is empty' });;
+      }
+      res.status(200).send(getAll);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
 module.exports = router;
