@@ -5,9 +5,9 @@ const router = express.Router();
 
 // Insert a new record
 router.post('/records', async (req, res) => {
-  const { username, password } = req.body;
+  const { service, username, password } = req.body;
   try {
-    const newRecord = new Record({ username, password });
+    const newRecord = new Record({ service, username, password });
     await newRecord.save();
     res.status(201).json(newRecord);
   } catch (error) {
@@ -18,11 +18,11 @@ router.post('/records', async (req, res) => {
 // Update an existing record
 router.put('/records/:id', async (req, res) => {
   const { id } = req.params;
-  const { username, password } = req.body;
+  const { service, username, password } = req.body;
   try {
     const updatedRecord = await Record.findByIdAndUpdate(
       id,
-      { username, password },
+      { service, username, password },
       { new: true }
     );
     if (!updatedRecord) {
@@ -51,10 +51,11 @@ router.delete('/records/:id', async (req, res) => {
 router.get('/getAll', async (req, res) => {
   try{
     const getAll = await Record.find();
+    console.log(typeof(getAll));
     if (!getAll.length === 0) {
-      return res.status(200).send({ error: 'Database is empty' });;
+      return res.status(200).json([]);;
       }
-      res.status(200).send(getAll);
+      res.status(200).json(getAll);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

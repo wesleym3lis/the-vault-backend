@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const db = require('./database');
 const recordRoutes = require('./routes/routes');
+const cors = require('cors');
 
 
 dotenv.config();
@@ -9,7 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware para analisar o corpo da requisição como JSON
+app.use(cors());
 app.use(express.json());
 
 app.use('/', recordRoutes);

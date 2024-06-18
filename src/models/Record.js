@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const recordSchema = new mongoose.Schema({
+    service: {
+        type: String,
+        required: true,
+        unique: false,
+      },
     username: {
         type: String,
         required: true,
