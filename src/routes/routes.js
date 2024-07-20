@@ -1,7 +1,10 @@
 const express = require('express');
 const Record = require('../models/Record');
+const bodyParser = require('body-parser');
 
 const router = express.Router();
+
+router.use(bodyParser.json());
 
 // Insert a new record
 router.post('/records', async (req, res) => {
@@ -35,10 +38,11 @@ router.put('/records/:id', async (req, res) => {
 });
 
 // Delete a record
-router.delete('/records/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/remove/:service', async (req, res) => {
+  const { data } = req.body;
   try {
-    const deletedRecord = await Record.findByIdAndDelete(id);
+    const deletedRecord = await Record.findOneAndDelete(data);
+    
     if (!deletedRecord) {
       return res.status(404).json({ error: 'Record not found' });
     }
@@ -46,6 +50,7 @@ router.delete('/records/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+  
 });
 
 router.get('/getAll', async (req, res) => {
